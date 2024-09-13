@@ -31,6 +31,7 @@
             FilePath_txt = new TextBox();
             SelectFile_btn = new Button();
             UploadFile_btn = new Button();
+            openFileDialog1 = new OpenFileDialog();
             SuspendLayout();
             // 
             // FilePath_txt
@@ -48,6 +49,7 @@
             SelectFile_btn.TabIndex = 1;
             SelectFile_btn.Text = "Select File";
             SelectFile_btn.UseVisualStyleBackColor = true;
+            SelectFile_btn.Click += SelectFile_btn_Click;
             // 
             // UploadFile_btn
             // 
@@ -57,6 +59,11 @@
             UploadFile_btn.TabIndex = 2;
             UploadFile_btn.Text = "Upload File";
             UploadFile_btn.UseVisualStyleBackColor = true;
+            UploadFile_btn.Click += UploadFile_btn_Click;
+            // 
+            // openFileDialog1
+            // 
+            openFileDialog1.FileName = "openFileDialog1";
             // 
             // UploadFileForm
             // 
@@ -79,5 +86,6 @@
         private TextBox FilePath_txt;
         private Button SelectFile_btn;
         private Button UploadFile_btn;
+        private OpenFileDialog openFileDialog1;
     }
 }
