@@ -1,6 +1,6 @@
 ﻿namespace WinFormUploadFile
 {
-    partial class Form1
+    partial class UploadFileForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -28,12 +28,56 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Form1";
+            FilePath_txt = new TextBox();
+            SelectFile_btn = new Button();
+            UploadFile_btn = new Button();
+            SuspendLayout();
+            // 
+            // FilePath_txt
+            // 
+            FilePath_txt.Location = new Point(12, 12);
+            FilePath_txt.Name = "FilePath_txt";
+            FilePath_txt.Size = new Size(296, 25);
+            FilePath_txt.TabIndex = 0;
+            // 
+            // SelectFile_btn
+            // 
+            SelectFile_btn.Location = new Point(12, 42);
+            SelectFile_btn.Name = "SelectFile_btn";
+            SelectFile_btn.Size = new Size(296, 26);
+            SelectFile_btn.TabIndex = 1;
+            SelectFile_btn.Text = "Select File";
+            SelectFile_btn.UseVisualStyleBackColor = true;
+            // 
+            // UploadFile_btn
+            // 
+            UploadFile_btn.Location = new Point(12, 73);
+            UploadFile_btn.Name = "UploadFile_btn";
+            UploadFile_btn.Size = new Size(296, 26);
+            UploadFile_btn.TabIndex = 2;
+            UploadFile_btn.Text = "Upload File";
+            UploadFile_btn.UseVisualStyleBackColor = true;
+            // 
+            // UploadFileForm
+            // 
+            AutoScaleDimensions = new SizeF(7F, 17F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(320, 112);
+            Controls.Add(UploadFile_btn);
+            Controls.Add(SelectFile_btn);
+            Controls.Add(FilePath_txt);
+            Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            Name = "UploadFileForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "Upload File";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private TextBox FilePath_txt;
+        private Button SelectFile_btn;
+        private Button UploadFile_btn;
     }
 }

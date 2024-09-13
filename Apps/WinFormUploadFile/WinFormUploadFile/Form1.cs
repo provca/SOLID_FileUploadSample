@@ -1,8 +1,8 @@
 namespace WinFormUploadFile
 {
-    public partial class Form1 : Form
+    public partial class UploadFileForm : Form
     {
-        public Form1()
+        public UploadFileForm()
         {
             InitializeComponent();
         }
