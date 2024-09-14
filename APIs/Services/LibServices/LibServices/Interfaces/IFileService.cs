@@ -1,9 +1,9 @@
-﻿namespace LibFilesManager.Interfaces
+﻿namespace LibServices.Interfaces
 {
     /// <summary>
-    /// Interface representing a file with basic properties and functionality.
+    /// Interface representing a service that handles file operations.
     /// </summary>
-    public interface IFile
+    public interface IFileService
     {
         /// <summary>
         /// Gets the file name (without path) of the file.

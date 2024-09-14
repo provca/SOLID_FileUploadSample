@@ -3,7 +3,7 @@
     /// <summary>
     /// Enum representing different image file extensions.
     /// </summary>
-    internal enum ImageFileExtensions
+    public enum ImageFileExtensions
     {
         /// <summary>
         /// JPEG image file format.
