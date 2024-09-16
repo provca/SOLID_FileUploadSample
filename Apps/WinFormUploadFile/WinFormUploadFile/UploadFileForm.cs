@@ -38,22 +38,28 @@ namespace WinFormUploadFile
             // Get the file path from the text box
             string filePath = FilePath_txt.Text;
 
-            // Create an instance of FileService with the file path
+            // Create an instance of FileService with the file path.
             IFileService fileService = new FileService(filePath);
 
-            // Create a file adapter for compatibility with IFile
+            // Create a file adapter for compatibility with IFile.
             WinFormsFileToIFileServiceAdapter fileAdapter = new(fileService);
 
-            // Initialize the FileValidatorService with parameters for validation
+            // Initialize the FileValidatorService with parameters for validation.
             var fileValidatorService = new FileValidatorService("jpg", 1 * 1024 * 1024);
 
             // Validate the file
             bool isValid = fileValidatorService.ValidateFile(fileService);
 
-            // Show validation result to the user
+            // Show validation result to the user.
             if (isValid)
             {
                 MessageBox.Show("File is valid.");
+
+                string filePathTarget = "C:\\uploaded\\";
+
+                IFileUploadService fileUploadService = new FileUploadService(filePathTarget, fileValidatorService);
+
+                fileUploadService.UploadFileAsync(fileService, fileService.FileName);
             }
             else
             {
