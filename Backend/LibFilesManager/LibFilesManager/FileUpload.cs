@@ -18,10 +18,21 @@ namespace LibFilesManager
         }
 
         /// <inheritdoc />
-        public async Task<string> UploadFileAsync(IFile fileToUpload, string customFileName)
+        public async Task<(bool isSuccess, string filePath)> UploadFileAsync(IFile fileToUpload, string customFileName)
         {
-            // Save the file to the desired location.
-            return await SaveFileAsync(fileToUpload, customFileName);
+            try
+            {
+                // Save the file to the desired location.
+                string savedFilePath = await SaveFileAsync(fileToUpload, customFileName);
+
+                // Returns true and the path if everything goes well.
+                return (true, savedFilePath);
+            }
+            catch
+            {
+                // Returns false and an empty string on failure.
+                return (false, string.Empty);
+            }
         }
 
         /// <summary>

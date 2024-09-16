@@ -25,7 +25,7 @@ namespace LibServices
         }
 
         /// <inheritdoc cref="IFileUploadService.UploadFileAsync" />
-        public async Task<string> UploadFileAsync(IFileService fileToUpload, string customFileName)
+        public async Task<(bool isSuccess, string filePath)> UploadFileAsync(IFileService fileToUpload, string customFileName)
         {
             if (fileToUpload == null)
                 throw new ArgumentNullException(nameof(fileToUpload), "No file provided for upload.");
