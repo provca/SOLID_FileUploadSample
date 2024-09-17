@@ -9,7 +9,7 @@
         public static readonly int FDFilterIndex = 1;
 
         // FolderDialog params.
-        public static readonly string FBDDescription = "Select de folder to upload the image.";
+        public static readonly string FBDDescription = "Select the folder to upload the image.";
 
         // Default values.
         public static string CustomFolderName = @"C:\DefaultUploadedImages\";
