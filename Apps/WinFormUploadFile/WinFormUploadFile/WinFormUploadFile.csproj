@@ -16,9 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="LibServices">
-      <HintPath>..\..\..\APIs\Services\LibServices\LibServices\bin\Debug\net8.0\LibServices.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\APIs\Services\LibServices\LibServices\LibServices.csproj" />
   </ItemGroup>
 
 </Project>

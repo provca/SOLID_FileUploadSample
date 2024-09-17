@@ -1,8 +1,8 @@
 ﻿using LibFilesManager.Enums;
 using LibFilesManager.Interfaces;
-using LibServices.Interfaces;
+using LibServices.DataManager.Interfaces;
 
-namespace LibServices.Adapters
+namespace LibServices.DataManager.Adapters
 {
     /// <summary>
     /// Adapter class for converting an <see cref="IFileService"/> instance into an <see cref="IFile"/>.

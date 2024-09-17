@@ -1,9 +1,9 @@
 ﻿using LibFilesManager;
 using LibFilesManager.Interfaces;
-using LibServices.Adapters;
-using LibServices.Interfaces;
+using LibServices.DataManager.Adapters;
+using LibServices.DataManager.Interfaces;
 
-namespace LibServices
+namespace LibServices.DataManager
 {
     /// <summary>
     /// Provides file upload services including validation before upload.

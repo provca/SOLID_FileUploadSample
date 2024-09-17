@@ -1,6 +1,6 @@
-﻿using LibServices.Interfaces;
+﻿using LibServices.DataManager.Interfaces;
 
-namespace LibServices.Factories
+namespace LibServices.DataManager.Factories
 {
     public class FilesManagerServiceFactory
     {

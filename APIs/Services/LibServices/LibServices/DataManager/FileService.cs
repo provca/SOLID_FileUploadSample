@@ -1,7 +1,7 @@
 ﻿using LibFilesManager.Enums;
-using LibServices.Interfaces;
+using LibServices.DataManager.Interfaces;
 
-namespace LibServices
+namespace LibServices.DataManager
 {
     /// <summary>
     /// Service class representing a file to be processed. Implements <see cref="IFileService"/> to provide file operations.

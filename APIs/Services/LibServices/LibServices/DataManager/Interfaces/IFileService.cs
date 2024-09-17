@@ -1,4 +1,4 @@
-﻿namespace LibServices.Interfaces
+﻿namespace LibServices.DataManager.Interfaces
 {
     /// <summary>
     /// Interface representing a service that handles file operations.

@@ -1,4 +1,4 @@
-﻿namespace LibServices.Interfaces
+﻿namespace LibServices.DataManager.Interfaces
 {
     /// <summary>
     /// Interface for services that handle file uploads.
