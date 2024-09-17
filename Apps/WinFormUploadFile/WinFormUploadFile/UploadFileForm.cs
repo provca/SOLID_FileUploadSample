@@ -1,5 +1,4 @@
-using LibServices;
-using LibServices.Interfaces;
+using LibServices.Factories;
 using System.Diagnostics;
 using WinFormUploadFile.Components;
 using WinFormUploadFile.Settings;
@@ -76,53 +75,26 @@ namespace WinFormUploadFile
         /// </summary>
         private async void UploadFile_btn_Click(object sender, EventArgs e)
         {
-            // Get the file path from the text box
+            // Get the file path from the text box.
             string filePath = FilePath_txt.Text;
 
-            // Create an instance of FileService with the file path.
-            IFileService fileService = new FileService(filePath);
+            // Target Folder.
+            string filePathTarget = string.IsNullOrEmpty(FolderTarget_txt.Text) ? UploadFileSettings.CustomFolderName : FolderTarget_txt.Text;
 
-            // Initialize the FileValidatorService with parameters for validation.
-            var fileValidatorService = new FileValidatorService("jpg", 1 * 1024 * 1024);
+            // Custom name for the file, if not specified, use the original name.
+            string fileName = string.IsNullOrWhiteSpace(CustomFileName_txt.Text) ? Path.GetFileName(filePath) : CustomFileName_txt.Text;
 
-            // Validate the file.
-            bool isValid = fileValidatorService.ValidateFile(fileService);
+            // Validate and upload the file.
+            var (isSuccess, uploadedFilePath) = await FilesManagerServiceFactory.ValidateAndUploadFileAsync(filePath, filePathTarget, "jpg", 1 * 1024 * 1024, fileName);
 
-            // Show validation result to the user.
-            if (isValid)
+            // Check the upload result.
+            if (isSuccess)
             {
-                MessageBox.Show("File is valid.");
-
-                string filePathTarget = FolderTarget_txt.Text;
-                filePathTarget = string.IsNullOrEmpty(FolderTarget_txt.Text) ? UploadFileSettings.CustomFolderName : filePathTarget;
-
-                IFileUploadService fileUploadService = new FileUploadService(filePathTarget, fileValidatorService);
-
-                string fileName = CustomFileName_txt.Text;
-                fileName = string.IsNullOrWhiteSpace(fileName) ? fileService.FileName : fileName;
-
-                try
-                {
-                    // Await the result of the file upload and handle the response.
-                    var (isSuccess, uploadedFilePath) = await fileUploadService.UploadFileAsync(fileService, fileName);
-
-                    if (isSuccess)
-                    {
-                        MessageBox.Show($"File uploaded successfully to: {uploadedFilePath}");
-                    }
-                    else
-                    {
-                        MessageBox.Show("File upload failed.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"An error occurred: {ex.Message}");
-                }
+                MessageBox.Show($"File uploaded successfully to: {uploadedFilePath}");
             }
             else
             {
-                MessageBox.Show("File is not valid.");
+                MessageBox.Show("File upload failed.");
             }
         }
     }
