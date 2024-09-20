@@ -1,7 +1,8 @@
 using LibServices.DataManager.Factories;
 using System.Diagnostics;
 using WinFormUploadFile.Components;
-using WinFormUploadFile.Settings;
+using LibServices.Configuration;
+using LibFilesManager.Enums;
 
 namespace WinFormUploadFile
 {
@@ -38,9 +39,9 @@ namespace WinFormUploadFile
                 }
                 else
                 {
-                    // If no file is selected, assign a default value or leave empty.
-                    FilePath_txt.Text = UploadFileSettings.CustomFileName;
-                    Trace.WriteLine($"No file was selected. Image will be saves as {UploadFileSettings.CustomFileName}");
+                    // If no file is selected leave empty.
+                    FilePath_txt.Text = string.Empty;
+                    Trace.WriteLine($"No file was selected.");
                 }
             }
         }
@@ -84,8 +85,11 @@ namespace WinFormUploadFile
             // Custom name for the file, if not specified, use the original name.
             string fileName = string.IsNullOrWhiteSpace(CustomFileName_txt.Text) ? Path.GetFileName(filePath) : CustomFileName_txt.Text;
 
+            // Get the extension of the selected file.
+            string extension = Path.GetExtension(fileName).ToLower().Replace(".", string.Empty);
+
             // Validate and upload the file.
-            var (isSuccess, uploadedFilePath) = await FilesManagerServiceFactory.ValidateAndUploadFileAsync(filePath, filePathTarget, "jpg", 1 * 1024 * 1024, fileName);
+            var (isSuccess, uploadedFilePath) = await FilesManagerServiceFactory.ValidateAndUploadFileAsync(filePath, filePathTarget, extension, UploadFileSettings.MaxFileSize, fileName);
 
             // Check the upload result.
             if (isSuccess)

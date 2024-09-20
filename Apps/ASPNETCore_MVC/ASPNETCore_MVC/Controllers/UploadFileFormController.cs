@@ -1,5 +1,6 @@
 ﻿using ASPNETCore_MVC.Adapters;
 using ASPNETCore_MVC.Models;
+using LibServices.Configuration;
 using LibServices.DataManager.Factories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +44,7 @@ namespace ASPNETCore_MVC.Controllers
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="model.FormFile"/> is null.
         /// </exception>
-        private (string folderTarget, string fileExtension, long maxFileSize, string customFileName) SetDefaultValuesForModel(UploadFileFormModel model)
+        private static (string folderTarget, string fileExtension, long maxFileSize, string customFileName) SetDefaultValuesForModel(UploadFileFormModel model)
         {
             if (model.FormFile == null)
             {
@@ -52,14 +53,14 @@ namespace ASPNETCore_MVC.Controllers
 
             // Set folder target to a default path if not provided by the user.
             model.FolderTarget = string.IsNullOrEmpty(model.FolderTarget)
-                ? @"C:\DefaultUploadedImages\"
+                ? UploadFileSettings.CustomFolderName
                 : model.FolderTarget;
 
             // Extract the file extension.
             string extension = Path.GetExtension(model.FormFile.FileName).ToLower().Replace(".", "");
 
             // Define the default maximum file size (1 MB).
-            long fileSize = 1 * 1024 * 1024;
+            long fileSize = UploadFileSettings.MaxFileSize;
 
             // Set custom file name to the original file name without extension if not provided by the user.
             model.CustomFileName = string.IsNullOrEmpty(model.CustomFileName)
@@ -93,7 +94,7 @@ namespace ASPNETCore_MVC.Controllers
             SetDefaultValuesForModel(model);
 
             // Retrieve the default values from the model.
-            var modelValues = SetDefaultValuesForModel(model);
+            var valuesToCheck = SetDefaultValuesForModel(model);
 
             // Remove previous validation errors for specific fields.
             ModelState.Remove(nameof(model.CustomFileName));
@@ -120,10 +121,10 @@ namespace ASPNETCore_MVC.Controllers
                 // Validate and upload the file using the service factory.
                 var fileUrl = await FilesManagerServiceFactoryForASP.ValidateAndUploadFileAsync(
                     fileAdapter,
-                    modelValues.folderTarget,
-                    modelValues.fileExtension,
-                    modelValues.maxFileSize,
-                    modelValues.customFileName
+                    valuesToCheck.folderTarget,
+                    valuesToCheck.fileExtension,
+                    valuesToCheck.maxFileSize,
+                    valuesToCheck.customFileName
                 );
 
                 // Check if the upload was successful.

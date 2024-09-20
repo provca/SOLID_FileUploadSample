@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LibServices.Configuration;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASPNETCore_MVC.Models
 {
@@ -28,13 +29,13 @@ namespace ASPNETCore_MVC.Models
         /// Defaults to "customFileName" if not provided.
         /// </summary>
         [Display(Name = "Custom File Name")]
-        public string CustomFileName { get; set; } = "customFileName";
+        public string CustomFileName { get; set; } = UploadFileSettings.CustomFileName;
 
         /// <summary>
         /// The folder path where the uploaded file will be saved.
         /// Defaults to "C:\DefaultUploadedImages\" if not specified.
         /// </summary>
-        public string FolderTarget { get; set; } = @"C:\DefaultUploadedImages\";
+        public string FolderTarget { get; set; } = UploadFileSettings.CustomFolderName;
     }
 }
 
