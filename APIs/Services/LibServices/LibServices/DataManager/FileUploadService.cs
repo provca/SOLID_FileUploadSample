@@ -24,7 +24,7 @@ namespace LibServices.DataManager
             _baseUploadPath = baseUploadPath ?? throw new ArgumentNullException(nameof(baseUploadPath));
         }
 
-        /// <inheritdoc cref="IFileUploadService.UploadFileAsync" />
+        /// <inheritdoc />
         public async Task<(bool isSuccess, string filePath)> UploadFileAsync(IFileService fileToUpload, string customFileName)
         {
             if (fileToUpload == null)
@@ -45,5 +45,29 @@ namespace LibServices.DataManager
             // Upload the file and return the result.
             return await fileUpload.UploadFileAsync(fileAdapter, customFileName);
         }
+
+        /// <inheritdoc />
+        public async Task<(bool isSuccess, string filePath)> UploadFileAsyncASP(IFileService fileToUpload, string customFileName)
+        {
+            // Check if the file to upload is null and throw an exception if no file is provided.
+            if (fileToUpload == null)
+                throw new ArgumentNullException(nameof(fileToUpload), "No file provided for upload.");
+
+            // Adapt the IFileService to IFile for file operations.
+            IFile fileAdapter = new ASPFormFileToIFileServiceAdapter(fileToUpload);
+
+            // Validate the file before uploading.
+            if (!_fileValidatorService.ValidateFile(fileToUpload))
+            {
+                throw new InvalidOperationException("File validation failed.");
+            }
+
+            // Prepare the file uploader.
+            IFileUpload fileUpload = new FileUpload(_baseUploadPath);
+
+            // Upload the file and return the result.
+            return await fileUpload.UploadFileAsync(fileAdapter, customFileName);
+        }
+
     }
 }

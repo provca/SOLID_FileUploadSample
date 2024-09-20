@@ -1,4 +1,6 @@
-﻿using LibServices.DataManager.Factories;
+﻿using ASPNETCore_MVC.Adapters;
+using ASPNETCore_MVC.Models;
+using LibServices.DataManager.Factories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNETCore_MVC.Controllers
@@ -11,52 +13,149 @@ namespace ASPNETCore_MVC.Controllers
         /// <returns>The Index view for the file upload form.</returns>
         public IActionResult Index()
         {
-            return View();
+            // Create a new instance of the model to be used in the view.
+            var model = new UploadFileFormModel();
+
+            // Return the view with the model.
+            return View(model);
         }
+
+        /// <summary>
+        /// Displays the partial view for the file upload form.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="PartialViewResult"/> that renders the upload form view.
+        /// </returns>
+        [HttpGet]
+        public IActionResult UploadFileForm()
+        {
+            // Return the partial view for the main form.
+            return PartialView();
+        }
+
+        /// <summary>
+        /// Sets default values for the <see cref="UploadFileFormModel"/> if the user has not provided them.
+        /// </summary>
+        /// <param name="model">The <see cref="UploadFileFormModel"/> containing the form data for file upload.</param>
+        /// <returns>
+        /// A tuple containing the folder target path, the file extension, the maximum file size, and the custom file name.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when the <paramref name="model.FormFile"/> is null.
+        /// </exception>
+        private (string folderTarget, string fileExtension, long maxFileSize, string customFileName) SetDefaultValuesForModel(UploadFileFormModel model)
+        {
+            if (model.FormFile == null)
+            {
+                throw new ArgumentNullException($"A valid FormFile is needed: {nameof(model.FormFile)}");
+            }
+
+            // Set folder target to a default path if not provided by the user.
+            model.FolderTarget = string.IsNullOrEmpty(model.FolderTarget)
+                ? @"C:\DefaultUploadedImages\"
+                : model.FolderTarget;
+
+            // Extract the file extension.
+            string extension = Path.GetExtension(model.FormFile.FileName).ToLower().Replace(".", "");
+
+            // Define the default maximum file size (1 MB).
+            long fileSize = 1 * 1024 * 1024;
+
+            // Set custom file name to the original file name without extension if not provided by the user.
+            model.CustomFileName = string.IsNullOrEmpty(model.CustomFileName)
+                ? Path.GetFileNameWithoutExtension(model.FormFile.FileName)
+                : model.CustomFileName;
+
+            // Return the folder target, file extension, file size, and custom file name.
+            return (model.FolderTarget, extension, fileSize, model.CustomFileName);
+        }
+
 
         /// <summary>
         /// Handles the file upload and validation process.
         /// </summary>
-        /// <param name="formFile">The file uploaded by the user via the form.</param>
+        /// <param name="model">The model from <see cref="UploadFileFormModel" /> file.</param>
         /// <returns>An IActionResult to render the appropriate view based on the validation result.</returns>
         [HttpPost]
-        public async Task<IActionResult> UploadFile(IFormFile formFile)
+        public async Task<IActionResult> UploadFile(UploadFileFormModel model)
         {
             // Check if no file was uploaded or if the file is empty.
-            if (formFile == null || formFile.Length == 0)
+            if (model.FormFile == null || model.FormFile.Length == 0)
             {
-                ModelState.AddModelError("File", "Please select a file to upload.");
-                return View("Index");
+                // Add an error to ModelState when no file is provided.
+                ModelState.AddModelError("File", "No file uploaded.");
+
+                // Return the view with the current model to show the error.
+                return View("Index", model);
             }
 
-            // Create a temporary file path to store the uploaded file.
-            string filePath = Path.Combine(Path.GetTempPath(), formFile.FileName);
+            // Set default values for the folder target, file extension, etc.
+            SetDefaultValuesForModel(model);
 
-            // Copy the uploaded file's content to the temporary file path.
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            // Retrieve the default values from the model.
+            var modelValues = SetDefaultValuesForModel(model);
+
+            // Remove previous validation errors for specific fields.
+            ModelState.Remove(nameof(model.CustomFileName));
+            ModelState.Remove(nameof(model.FolderTarget));
+
+            // If the model state contains any validation errors, output them to the console.
+            if (!ModelState.IsValid)
             {
-                await formFile.CopyToAsync(stream);
+                foreach (var state in ModelState)
+                {
+                    // Log each validation error to the console.
+                    Console.WriteLine($"{state.Key}: {string.Join(",", state.Value.Errors.Select(e => e.ErrorMessage))}");
+                }
+
+                // Return the view with the current model to show validation errors.
+                return View("Index", model);
             }
 
-            // Validate the uploaded file.
-            bool isValidated = FilesManagerServiceFactory.ValidateFile(filePath, "jpg", 1 * 1024 * 1024);
-
-            if (isValidated)
+            try
             {
-                // If the file is validated successfully, show a success message.
-                ViewBag.Message = $"File has been successfully validated.";
+                // Create an adapter to convert the form file to IFileService.
+                FormFileToIFileServiceAdapter fileAdapter = new(model.FormFile);
 
-                // Delete the temporary file after validation.
-                System.IO.File.Delete(filePath);
+                // Validate and upload the file using the service factory.
+                var fileUrl = await FilesManagerServiceFactoryForASP.ValidateAndUploadFileAsync(
+                    fileAdapter,
+                    modelValues.folderTarget,
+                    modelValues.fileExtension,
+                    modelValues.maxFileSize,
+                    modelValues.customFileName
+                );
+
+                // Check if the upload was successful.
+                if (fileUrl.isSuccess)
+                {
+                    // Handle the case where the file path is not provided after upload.
+                    if (string.IsNullOrEmpty(fileUrl.uploadedFilePath))
+                    {
+                        // Return a 500 status code if the upload failed unexpectedly.
+                        return StatusCode(500, "Error uploading file.");
+                    }
+
+                    // Display a success message to the user.
+                    ViewBag.Message = $"File uploaded successfully in {fileUrl.uploadedFilePath}!";
+                }
+                else
+                {
+                    // Display a failure message if the upload failed.
+                    ViewBag.Message = "File upload failed.";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // If the file is not valid, show an error message.
-                ViewBag.Message = "File is not valid.";
+                // Add an error to ModelState with the exception details.
+                ModelState.AddModelError(string.Empty, $"An error occurred while uploading the file: {ex.Message}");
+
+                // Return the view with the error message.
+                return View("Index", model);
             }
-            
-            // Return the Index view to display the message to the user.
-            return View("Index");
+
+            // Return the Index view to display the final message to the user.
+            return View("Index", model);
         }
     }
 }

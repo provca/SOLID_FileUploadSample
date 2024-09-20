@@ -10,6 +10,7 @@ namespace LibServices.DataManager.Adapters
     /// </summary>
     public class WinFormsFileToIFileServiceAdapter : IFile
     {
+        // The original file service object being adapted.
         private readonly IFileService _fileService;
 
         /// <summary>

@@ -1,23 +1,47 @@
-﻿<h2>Upload File</h2>
+﻿@model ASPNETCore_MVC.Models.UploadFileFormModel
+
+<h2>Upload File</h2>
 
 <!-- Form to upload a file -->
 <form asp-controller="UploadFileForm" asp-action="UploadFile" method="post" enctype="multipart/form-data">
     <!-- File input section -->
     <div class="form-group">
         <label for="fileInput">Select a file to upload:</label>
-        <input type="file" class="form-control" id="fileInput" name="formFile" aria-describedby="fileHelp" />
-        @* Show specific error if any for file field *@
-        @if (ViewData.ModelState.ContainsKey("File") && ViewData.ModelState["File"]?.Errors.Count > 0)
-        {
-            <small id="fileHelp" class="form-text text-danger">
-                @ViewData.ModelState["File"]?.Errors.FirstOrDefault()?.ErrorMessage
-            </small>
-        }
+        <input type="file" class="form-control" id="fileInput" name="FormFile" aria-describedby="fileHelp" />
     </div>
+
+    <!-- Custom File Name -->
+    <div class="form-group">
+        <label for="customFileName">Custom File Name (optional):</label>
+        <input type="text" class="form-control" id="customFileName" name="CustomFileName" value="@Model.CustomFileName" />
+    </div>
+
+    <!-- Folder Target -->
+    <div class="form-group">
+        <label for="folderTarget">Folder Target:</label>
+        <input type="text" class="form-control" id="folderTarget" name="FolderTarget" value="@Model.FolderTarget" />
+    </div>
+
+    <!-- Error message for file field -->
+    @if (ViewData.ModelState.ContainsKey("File") && ViewData.ModelState["File"]?.Errors.Count > 0)
+    {
+        <small id="fileHelp" class="form-text text-danger">
+            @ViewData.ModelState["File"]?.Errors.FirstOrDefault()?.ErrorMessage
+        </small>
+    }
 
     <!-- Submit button -->
     <button type="submit" class="btn btn-primary">Upload</button>
 </form>
+
+<!-- Display message of success or failure of the operation -->
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
+
 
 @* Display general errors from ModelState *@
 @if (!ViewData.ModelState.IsValid)
@@ -29,13 +53,3 @@
         }
     </div>
 }
-
-@* Display message of success or failure of the operation *@
-@if (!string.IsNullOrEmpty(ViewBag.Message))
-{
-    <div class="alert alert-info">
-        @ViewBag.Message
-    </div>
-}
-
-
