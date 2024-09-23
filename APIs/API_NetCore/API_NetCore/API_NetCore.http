@@ -1,0 +1,11 @@
+@API_NetCore_HostAddress = http://localhost:5176
+
+POST {{API_NetCore_HostAddress}}/FileUploadForm_API/UploadFile
+Content-Type: multipart/form-data
+
+###
+
+GET {{API_NetCore_HostAddress}}/FileUploadForm_API/UploadFile
+Accept: application/json
+
+###
