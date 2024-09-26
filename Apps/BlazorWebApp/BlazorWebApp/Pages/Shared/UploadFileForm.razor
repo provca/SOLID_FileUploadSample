@@ -1,0 +1,47 @@
+﻿<h3 style="text-align:center">Shared component</h3>
+<section style="width: 33%; margin: auto">
+    <form enctype="multipart/form-data">
+        <!-- File input section -->
+        <div class="form-group">
+            <label for="fileName">Select a file to upload:</label>
+            <InputFile OnChange="HandleFileSelected" />
+            <p>
+                <span>Selected File: @_fileName</span>
+            </p>
+        </div>
+
+        <!-- Custom File Name -->
+        <div class="form-group">
+            <label for="customFileName">Rename the file (optional):</label>
+            <input type="text" class="form-control" name="customFileName" value="@_customFileName" />
+        </div>
+
+        <!-- Folder Target -->
+        <div class="form-group">
+            <label for="customFolderName">Folder Target (optional):</label>
+            <input type="text" class="form-control" name="customFolderName" value="@_customFolderName" />
+        </div>
+
+        <!-- Button -->
+        <button type="button" class="btn btn-primary" @onclick="UploadFileAsync">Upload File</button>
+    </form>
+</section>
+
+@code {
+    private IBrowserFile? _formFile;
+    private string _fileName = string.Empty;
+    private string _customFileName = UploadFileSettings.CustomFileName;
+    private string _customFolderName = UploadFileSettings.CustomFolderName;
+
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        _formFile = e.File;
+        _fileName = _formFile.Name;
+    }
+
+    private async Task UploadFileAsync()
+    {
+        /* Ready to insert code */
+        await Task.Delay(1);
+    }
+}

@@ -5,10 +5,6 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebApp", "BlazorWebApp\BlazorWebApp.csproj", "{E75A5537-9981-4582-ADF2-7F8C52EB18A6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibServices", "..\..\APIs\Services\LibServices\LibServices\LibServices.csproj", "{F86E204C-2D9F-4867-A793-DBA2A882AB4B}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibFilesManager", "..\..\Backend\LibFilesManager\LibFilesManager\LibFilesManager.csproj", "{3D66D369-9C01-4283-AB75-D1AF91B2FAEB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,14 +15,6 @@ Global
 		{E75A5537-9981-4582-ADF2-7F8C52EB18A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E75A5537-9981-4582-ADF2-7F8C52EB18A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E75A5537-9981-4582-ADF2-7F8C52EB18A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F86E204C-2D9F-4867-A793-DBA2A882AB4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F86E204C-2D9F-4867-A793-DBA2A882AB4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F86E204C-2D9F-4867-A793-DBA2A882AB4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F86E204C-2D9F-4867-A793-DBA2A882AB4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3D66D369-9C01-4283-AB75-D1AF91B2FAEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3D66D369-9C01-4283-AB75-D1AF91B2FAEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3D66D369-9C01-4283-AB75-D1AF91B2FAEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3D66D369-9C01-4283-AB75-D1AF91B2FAEB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

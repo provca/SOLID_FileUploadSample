@@ -19,11 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\APIs\Services\LibServices\LibServices\LibServices.csproj" />
+    <Folder Include="wwwroot\img\uploaded\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\img\uploaded\" />
+    <Reference Include="LibServices">
+      <HintPath>..\..\..\APIs\Services\LibServices\LibServices\bin\Debug\net8.0\LibServices.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
