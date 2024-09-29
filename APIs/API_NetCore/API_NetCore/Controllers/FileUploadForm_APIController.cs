@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_NetCore.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
-    public class FileUploadFormFileController : ControllerBase
+    [ApiController]
+    public class FileUploadForm_APIController : ControllerBase
     {
         /// <summary>
         /// Uploads a file using the provided model.
@@ -17,7 +17,7 @@ namespace API_NetCore.Controllers
         /// <param name="model">The model containing the file and other metadata.</param>
         /// <returns>An IActionResult indicating the outcome of the upload.</returns>
         [HttpPost("UploadFile")]
-        public async Task<IActionResult> UploadFile([FromForm] FileUploadFormFileModel model)
+        public async Task<IActionResult> UploadFile([FromForm] FileUploadForm_APIModel model)
         {
             // Check if no file was uploaded or if the file is empty.
             if (model.FormFile == null || model.FormFile.Length == 0)
@@ -64,16 +64,16 @@ namespace API_NetCore.Controllers
         }
 
         /// <summary>
-        /// Sets default values for the <see cref="FileUploadFormFileModel"/> if the user has not provided them.
+        /// Sets default values for the <see cref="FileUploadForm_APIModel"/> if the user has not provided them.
         /// </summary>
-        /// <param name="model">The <see cref="FileUploadFormFileModel"/> containing the form data for file upload.</param>
+        /// <param name="model">The <see cref="FileUploadForm_APIModel"/> containing the form data for file upload.</param>
         /// <returns>
         /// A tuple containing the folder target path, the file extension, the maximum file size, and the custom file name.
         /// </returns>
         /// <exception cref="ArgumentNullException">
         /// Thrown when the <paramref name="model.FormFile"/> is null.
         /// </exception>
-        private static (string folderTarget, string fileExtension, long maxFileSize, string customFileName) SetDefaultValuesForModel(FileUploadFormFileModel model)
+        private static (string folderTarget, string fileExtension, long maxFileSize, string customFileName) SetDefaultValuesForModel(FileUploadForm_APIModel model)
         {
             // Check if the FormFile is null and throw an exception if it is.
             if (model.FormFile == null)

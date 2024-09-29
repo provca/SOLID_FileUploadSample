@@ -6,7 +6,7 @@ namespace API_NetCore.Models
     /// <summary>
     /// Model representing the form data for file uploads.
     /// </summary>
-    public class FileUploadFormFileModel
+    public class FileUploadForm_APIModel
     {
         /// <summary>
         /// The file uploaded by the user. This field is required.

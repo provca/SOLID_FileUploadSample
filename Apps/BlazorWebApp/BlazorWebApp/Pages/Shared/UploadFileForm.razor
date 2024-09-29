@@ -28,15 +28,15 @@
 </section>
 
 @code {
-    private IBrowserFile? _browserFile;
+    private IBrowserFile? _formFile;
     private string _fileName = string.Empty;
     private string _customFileName = UploadFileSettings.CustomFileName;
     private string _customFolderName = UploadFileSettings.CustomFolderName;
 
     private void HandleFileSelected(InputFileChangeEventArgs e)
     {
-        _browserFile = e.File;
-        _fileName = _browserFile.Name;
+        _formFile = e.File;
+        _fileName = _formFile.Name;
     }
 
     private async Task UploadFileAsync()

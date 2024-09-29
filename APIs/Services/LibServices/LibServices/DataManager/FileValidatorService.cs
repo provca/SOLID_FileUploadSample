@@ -24,7 +24,7 @@ namespace LibServices.DataManager
         /// <inheritdoc />
         public bool ValidateFile(IFileService fileService)
         {
-            IFile fileAdapter = new IFileToIFileServiceAdapter(fileService);
+            IFile fileAdapter = new WinFormsFileToIFileServiceAdapter(fileService);
 
             IFileValidator fileValidator = new FileValidator(_selectedExtension, _maxFileSize);
 

@@ -8,16 +8,16 @@ namespace LibServices.DataManager.Adapters
     /// Adapter class for converting an <see cref="IFileService"/> instance into an <see cref="IFile"/>.
     /// Specifically designed for use in Windows Forms projects.
     /// </summary>
-    public class IFileToIFileServiceAdapter : IFile
+    public class WinFormsFileToIFileServiceAdapter : IFile
     {
         // The original file service object being adapted.
         private readonly IFileService _fileService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IFileToIFileServiceAdapter"/> class.
+        /// Initializes a new instance of the <see cref="WinFormsFileToIFileServiceAdapter"/> class.
         /// </summary>
         /// <param name="fileService">An instance of <see cref="IFileService"/> to be adapted.</param>
-        public IFileToIFileServiceAdapter(IFileService fileService)
+        public WinFormsFileToIFileServiceAdapter(IFileService fileService)
         {
             _fileService = fileService;
         }

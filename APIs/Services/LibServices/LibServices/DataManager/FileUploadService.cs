@@ -31,7 +31,7 @@ namespace LibServices.DataManager
                 throw new ArgumentNullException(nameof(fileToUpload), "No file provided for upload.");
 
             // Adapt the IFileService to IFile for file operations.
-            IFile fileAdapter = new IFileToIFileServiceAdapter(fileToUpload);
+            IFile fileAdapter = new WinFormsFileToIFileServiceAdapter(fileToUpload);
 
             // Validate the file before uploading.
             if (!_fileValidatorService.ValidateFile(fileToUpload))
@@ -54,7 +54,7 @@ namespace LibServices.DataManager
                 throw new ArgumentNullException(nameof(fileToUpload), "No file provided for upload.");
 
             // Adapt the IFileService to IFile for file operations.
-            IFile fileAdapter = new FormFileToIFileServiceAdapter(fileToUpload);
+            IFile fileAdapter = new ASPFormFileToIFileServiceAdapter(fileToUpload);
 
             // Validate the file before uploading.
             if (!_fileValidatorService.ValidateFile(fileToUpload))
