@@ -36,9 +36,9 @@
             CustomFileName_lbl = new Label();
             Separator1_lbl = new Label();
             SelectFolder_btn = new Button();
-            FolderTarget_txt = new TextBox();
+            FilePathTarget_txt = new TextBox();
             Separator2_lbl = new Label();
-            CustomFolder_lbl = new Label();
+            FilePathTarget_lbl = new Label();
             label1 = new Label();
             folderBrowserDialog1 = new FolderBrowserDialog();
             SuspendLayout();
@@ -113,10 +113,10 @@
             // 
             // FolderTarget_txt
             // 
-            FolderTarget_txt.Location = new Point(12, 190);
-            FolderTarget_txt.Name = "FolderTarget_txt";
-            FolderTarget_txt.Size = new Size(296, 25);
-            FolderTarget_txt.TabIndex = 4;
+            FilePathTarget_txt.Location = new Point(12, 190);
+            FilePathTarget_txt.Name = "FolderTarget_txt";
+            FilePathTarget_txt.Size = new Size(296, 25);
+            FilePathTarget_txt.TabIndex = 4;
             // 
             // Separator2_lbl
             // 
@@ -129,14 +129,14 @@
             // 
             // CustomFolder_lbl
             // 
-            CustomFolder_lbl.AutoSize = true;
-            CustomFolder_lbl.Font = new Font("Segoe UI", 8.25F, FontStyle.Italic);
-            CustomFolder_lbl.ForeColor = SystemColors.ControlDarkDark;
-            CustomFolder_lbl.Location = new Point(12, 169);
-            CustomFolder_lbl.Name = "CustomFolder_lbl";
-            CustomFolder_lbl.Size = new Size(89, 13);
-            CustomFolder_lbl.TabIndex = 0;
-            CustomFolder_lbl.Text = "CustomFolder_lbl";
+            FilePathTarget_lbl.AutoSize = true;
+            FilePathTarget_lbl.Font = new Font("Segoe UI", 8.25F, FontStyle.Italic);
+            FilePathTarget_lbl.ForeColor = SystemColors.ControlDarkDark;
+            FilePathTarget_lbl.Location = new Point(12, 169);
+            FilePathTarget_lbl.Name = "CustomFolder_lbl";
+            FilePathTarget_lbl.Size = new Size(89, 13);
+            FilePathTarget_lbl.TabIndex = 0;
+            FilePathTarget_lbl.Text = "CustomFolder_lbl";
             // 
             // label1
             // 
@@ -153,10 +153,10 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(320, 315);
             Controls.Add(label1);
-            Controls.Add(CustomFolder_lbl);
+            Controls.Add(FilePathTarget_lbl);
             Controls.Add(Separator2_lbl);
             Controls.Add(SelectFolder_btn);
-            Controls.Add(FolderTarget_txt);
+            Controls.Add(FilePathTarget_txt);
             Controls.Add(Separator1_lbl);
             Controls.Add(CustomFileName_lbl);
             Controls.Add(CustomFileName_txt);
@@ -181,9 +181,9 @@
         private Label CustomFileName_lbl;
         private Label Separator1_lbl;
         private Button SelectFolder_btn;
-        private TextBox FolderTarget_txt;
+        private TextBox FilePathTarget_txt;
         private Label Separator2_lbl;
-        private Label CustomFolder_lbl;
+        private Label FilePathTarget_lbl;
         private Label label1;
         private FolderBrowserDialog folderBrowserDialog1;
     }

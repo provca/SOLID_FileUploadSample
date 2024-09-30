@@ -1,8 +1,7 @@
+using LibServices.Configuration;
 using LibServices.DataManager.Factories;
 using System.Diagnostics;
 using WinFormUploadFile.Components;
-using LibServices.Configuration;
-using LibFilesManager.Enums;
 
 namespace WinFormUploadFile
 {
@@ -18,8 +17,8 @@ namespace WinFormUploadFile
         {
             InitializeComponent();
             FilePath_txt.Enabled = false;
-            FolderTarget_txt.Enabled = false;
-            CustomFolder_lbl.Text = $"Select target folder, '{UploadFileSettings.CustomFolderName}' by default:";
+            FilePathTarget_txt.Enabled = false;
+            FilePathTarget_lbl.Text = $"Select target folder, '{UploadFileSettings.FilePathTarget}' by default:";
         }
 
         /// <summary>
@@ -60,13 +59,13 @@ namespace WinFormUploadFile
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     // If it's a valid folder textbox is populated.
-                    FolderTarget_txt.Text = Path.GetFullPath(fbd.SelectedPath);
+                    FilePathTarget_txt.Text = Path.GetFullPath(fbd.SelectedPath);
                 }
                 else
                 {
                     // If there is not a valid folder, textbox gets a default value.
-                    FolderTarget_txt.Text = UploadFileSettings.CustomFolderName;
-                    Trace.WriteLine($"No folder selected. Image will be saved in {UploadFileSettings.CustomFolderName}");
+                    FilePathTarget_txt.Text = UploadFileSettings.FilePathTarget;
+                    Trace.WriteLine($"No folder selected. Image will be saved in {UploadFileSettings.FilePathTarget}");
                 }
             }
         }
@@ -80,16 +79,13 @@ namespace WinFormUploadFile
             string filePath = FilePath_txt.Text;
 
             // Target Folder.
-            string filePathTarget = string.IsNullOrEmpty(FolderTarget_txt.Text) ? UploadFileSettings.CustomFolderName : FolderTarget_txt.Text;
+            string filePathTarget = string.IsNullOrEmpty(FilePathTarget_txt.Text) ? UploadFileSettings.FilePathTarget : FilePathTarget_txt.Text;
 
             // Custom name for the file, if not specified, use the original name.
-            string fileName = string.IsNullOrWhiteSpace(CustomFileName_txt.Text) ? Path.GetFileName(filePath) : CustomFileName_txt.Text;
-
-            // Get the extension of the selected file.
-            string extension = Path.GetExtension(fileName).ToLower().Replace(".", string.Empty);
+            string customFileName = string.IsNullOrWhiteSpace(CustomFileName_txt.Text) ? Path.GetFileName(filePath) : CustomFileName_txt.Text;
 
             // Validate and upload the file.
-            var (isSuccess, uploadedFilePath) = await FilesManagerServiceFactory.ValidateAndUploadFileAsync(filePath, filePathTarget, extension, UploadFileSettings.MaxFileSize, fileName);
+            var (isSuccess, uploadedFilePath) = await FilesManagerServiceFactory.ValidateAndUploadFileAsync(filePath, UploadFileSettings.MaxFileSize, filePathTarget, customFileName);
 
             // Check the upload result.
             if (isSuccess)

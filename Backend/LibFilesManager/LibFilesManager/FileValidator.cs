@@ -12,9 +12,6 @@ namespace LibFilesManager
         // List of valid image file extensions, initialized from the enum.
         private static readonly List<string> _listOfExtensions = PopulateListOfExtensions();
 
-        // The selected file extension to validate against.
-        private readonly string _selectedExtension;
-
         // Maximum allowed file size for uploads (in bytes).
         private readonly long _maxFileSize;
 
@@ -24,11 +21,9 @@ namespace LibFilesManager
         /// <summary>
         /// Initializes a new instance of the <see cref="FileValidator"/> class with specific validation settings.
         /// </summary>
-        /// <param name="selectedExtension">The file extension to validate against.</param>
         /// <param name="maxFileSize">The maximum file size allowed for uploads.</param>
-        public FileValidator(string selectedExtension, long maxFileSize)
+        public FileValidator(long maxFileSize)
         {
-            _selectedExtension = selectedExtension;
             _maxFileSize = maxFileSize;
         }
 
@@ -44,13 +39,6 @@ namespace LibFilesManager
 
             // Extract the file extension and ensure it's valid.
             var extension = Path.GetExtension(fileToUpload.FileName).ToLowerInvariant().Replace(".", string.Empty);
-
-            // Check if the file extension matches the selected one.
-            if (_selectedExtension != extension)
-            {
-                Trace.WriteLine("Selected file has a different extension from configuration.");
-                return false;
-            }
 
             // Verify that the extension is part of the allowed list.
             if (string.IsNullOrEmpty(extension) || !_listOfExtensions.Contains(extension))

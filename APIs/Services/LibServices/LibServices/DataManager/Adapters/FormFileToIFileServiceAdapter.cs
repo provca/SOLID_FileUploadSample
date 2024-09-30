@@ -7,16 +7,16 @@ namespace LibServices.DataManager.Adapters
     /// Adapter class to convert an <see cref="IFileService"/> object into the <see cref="IFile"/> interface.
     /// This allows for compatibility for ASP projects.
     /// </summary>
-    public class ASPFormFileToIFileServiceAdapter : IFile
+    public class FormFileToIFileServiceAdapter : IFile
     {
         // The original file service object being adapted.
         private readonly IFileService _formFile;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ASPFormFileToIFileServiceAdapter"/> class.
+        /// Initializes a new instance of the <see cref="FormFileToIFileServiceAdapter"/> class.
         /// </summary>
         /// <param name="formFile">The file service object to adapt.</param>
-        public ASPFormFileToIFileServiceAdapter(IFileService formFile)
+        public FormFileToIFileServiceAdapter(IFileService formFile)
         {
             _formFile = formFile;
         }

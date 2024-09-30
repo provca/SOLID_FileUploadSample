@@ -35,44 +35,6 @@ namespace ASPNETCore_MVC.Controllers
         }
 
         /// <summary>
-        /// Sets default values for the <see cref="UploadFileFormModel"/> if the user has not provided them.
-        /// </summary>
-        /// <param name="model">The <see cref="UploadFileFormModel"/> containing the form data for file upload.</param>
-        /// <returns>
-        /// A tuple containing the folder target path, the file extension, the maximum file size, and the custom file name.
-        /// </returns>
-        /// <exception cref="ArgumentNullException">
-        /// Thrown when the <paramref name="model.FormFile"/> is null.
-        /// </exception>
-        private static (string folderTarget, string fileExtension, long maxFileSize, string customFileName) SetDefaultValuesForModel(UploadFileFormModel model)
-        {
-            if (model.FormFile == null)
-            {
-                throw new ArgumentNullException($"A valid FormFile is needed: {nameof(model.FormFile)}");
-            }
-
-            // Set folder target to a default path if not provided by the user.
-            model.FolderTarget = string.IsNullOrEmpty(model.FolderTarget)
-                ? UploadFileSettings.CustomFolderName
-                : model.FolderTarget;
-
-            // Extract the file extension.
-            string extension = Path.GetExtension(model.FormFile.FileName).ToLower().Replace(".", "");
-
-            // Define the default maximum file size (1 MB).
-            long fileSize = UploadFileSettings.MaxFileSize;
-
-            // Set custom file name to the original file name without extension if not provided by the user.
-            model.CustomFileName = string.IsNullOrEmpty(model.CustomFileName)
-                ? Path.GetFileNameWithoutExtension(model.FormFile.FileName)
-                : model.CustomFileName;
-
-            // Return the folder target, file extension, file size, and custom file name.
-            return (model.FolderTarget, extension, fileSize, model.CustomFileName);
-        }
-
-
-        /// <summary>
         /// Handles the file upload and validation process.
         /// </summary>
         /// <param name="model">The model from <see cref="UploadFileFormModel" /> file.</param>
@@ -90,15 +52,8 @@ namespace ASPNETCore_MVC.Controllers
                 return View("Index", model);
             }
 
-            // Set default values for the folder target, file extension, etc.
-            SetDefaultValuesForModel(model);
-
             // Retrieve the default values from the model.
             var valuesToCheck = SetDefaultValuesForModel(model);
-
-            // Remove previous validation errors for specific fields.
-            ModelState.Remove(nameof(model.CustomFileName));
-            ModelState.Remove(nameof(model.FolderTarget));
 
             // If the model state contains any validation errors, output them to the console.
             if (!ModelState.IsValid)
@@ -121,10 +76,9 @@ namespace ASPNETCore_MVC.Controllers
                 // Validate and upload the file using the service factory.
                 var fileUrl = await FilesManagerServiceFactoryForASP.ValidateAndUploadFileAsync(
                     fileAdapter,
-                    valuesToCheck.folderTarget,
-                    valuesToCheck.fileExtension,
-                    valuesToCheck.maxFileSize,
-                    valuesToCheck.customFileName
+                    UploadFileSettings.MaxFileSize,
+                    valuesToCheck.FilePathTarget,
+                    valuesToCheck.CustomFileName
                 );
 
                 // Check if the upload was successful.
@@ -157,6 +111,37 @@ namespace ASPNETCore_MVC.Controllers
 
             // Return the Index view to display the final message to the user.
             return View("Index", model);
+        }
+
+        /// <summary>
+        /// Sets default values for the <see cref="UploadFileFormModel"/> if the user has not provided them.
+        /// </summary>
+        /// <param name="model">The <see cref="UploadFileFormModel"/> containing the form data for file upload.</param>
+        /// <returns>
+        /// A tuple containing the folder target path, the file extension, the maximum file size, and the custom file name.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when the <paramref name="model.FormFile"/> is null.
+        /// </exception>
+        private static (string FilePathTarget, string CustomFileName) SetDefaultValuesForModel(UploadFileFormModel model)
+        {
+            if (model.FormFile == null)
+            {
+                throw new ArgumentNullException($"A valid FormFile is needed: {nameof(model.FormFile)}");
+            }
+
+            // Set custom file name to the original file name without extension if not provided by the user.
+            model.CustomFileName = string.IsNullOrEmpty(model.CustomFileName)
+                ? Path.GetFileNameWithoutExtension(model.FormFile.FileName)
+                : model.CustomFileName;
+
+            // Set folder target to a default path if not provided by the user.
+            model.FilePathTarget = string.IsNullOrEmpty(model.FilePathTarget)
+                ? Path.GetFullPath(UploadFileSettings.FilePathTarget)
+                : model.FilePathTarget;
+
+            // Return the file size, folder target, and custom file name.
+            return (model.FilePathTarget, model.CustomFileName);
         }
     }
 }
