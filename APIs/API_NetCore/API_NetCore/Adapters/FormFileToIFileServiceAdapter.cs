@@ -2,6 +2,9 @@
 
 namespace API_NetCore.Adapters
 {
+    /// <summary>
+    /// Adapter that converts an IFormFile to an <see cref="IFileService"/> implementation.
+    /// </summary>
     public class FormFileToIFileServiceAdapter : IFileService
     {
         private readonly IFormFile _formFile;

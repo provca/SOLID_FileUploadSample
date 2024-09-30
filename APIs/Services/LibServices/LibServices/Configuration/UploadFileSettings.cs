@@ -53,7 +53,12 @@ namespace LibServices.Configuration
         /// Default Values.
         /// Default folder path to upload files if none is provided.
         /// </summary>
-        public static readonly string FilePathTarget = @"C:\DefaultUploadedImages\";
+        public static readonly string FilePathTarget =
+            Path.Combine(Path.GetPathRoot(Environment.CurrentDirectory)
+                ?? throw new InvalidOperationException(
+                    "No se pudo determinar el directorio raíz."),
+                    "DefaultUploadedImages"
+                );
 
         /// <summary>
         /// Default Values.

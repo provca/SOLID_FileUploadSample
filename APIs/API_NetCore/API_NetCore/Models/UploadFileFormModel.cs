@@ -20,11 +20,6 @@ namespace API_NetCore.Models
         public string FileName { get; set; } = string.Empty;
 
         /// <summary>
-        /// The file path where the uploaded file will be saved.
-        /// </summary>
-        public string FilePath { get; set; } = string.Empty;
-
-        /// <summary>
         /// The custom file name provided by the user (optional).
         /// Defaults to "customFileName" if not provided.
         /// </summary>
