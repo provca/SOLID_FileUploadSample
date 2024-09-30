@@ -6,7 +6,7 @@ namespace API_NetCore.Models
     /// <summary>
     /// Model representing the form data for file uploads.
     /// </summary>
-    public class FileUploadForm_APIModel
+    public class UploadFileFormModel
     {
         /// <summary>
         /// The file uploaded by the user. This field is required.
@@ -35,6 +35,6 @@ namespace API_NetCore.Models
         /// The folder path where the uploaded file will be saved.
         /// Defaults to "C:\DefaultUploadedImages\" if not specified.
         /// </summary>
-        public string FolderTarget { get; set; } = UploadFileSettings.CustomFolderName;
+        public string FilePathTarget { get; set; } = UploadFileSettings.FilePathTarget;
     }
 }
