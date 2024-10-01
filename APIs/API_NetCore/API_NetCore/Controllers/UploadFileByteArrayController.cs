@@ -1,5 +1,4 @@
-﻿using API_NetCore.Adapters;
-using API_NetCore.Models;
+﻿using API_NetCore.Models;
 using API_NetCore.Responses;
 using LibServices.Configuration;
 using LibServices.DataManager.Factories;
@@ -31,12 +30,12 @@ namespace API_NetCore.Controllers
             try
             {
                 // Adapter to transform the byte array into a file service compatible object.
-                var fileAdapter = new ByteArrayToIFileServiceAdapter(model.FileBytes, model.FileName);
+                var fileAdapter = new LibServices.DataManager.Adapters.ByteArrayToIFileServiceAdapter(model.FileBytes, model.FileName);
 
                 // Use the file manager service to validate and upload the file.
-                var fileUrlResult = await FilesManagerServiceFactoryForASP.ValidateAndUploadFileAsync(
+                var fileUrlResult = await FilesManagerServiceFactoryForWASM.ValidateAndUploadFileAsync(
                     fileAdapter,
-                    UploadFileSettings.MaxFileSize,
+                    UploadFileSettings.MaxFileSizeWASM,
                     model.FilePathTarget,
                     model.CustomFileName
                 );

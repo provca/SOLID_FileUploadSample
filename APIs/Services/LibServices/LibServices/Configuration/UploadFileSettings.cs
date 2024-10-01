@@ -51,12 +51,20 @@ namespace LibServices.Configuration
 
         /// <summary>
         /// Default Values.
+        /// Maximum allowed file size for Webassembly.
+        /// Maximum is specified and is smaller than initial . initial exceeds 65,536 (2^16). 2^16 pages is 2^16 * 64KiB = 4GiB bytes, which is the maximum range that a Wasm module can address, as Wasm currently only allows 32-bit addressing.
+        /// <see href="https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/Memory/Memory" />
+        /// </summary>
+        public static readonly long MaxFileSizeWASM = 1 * 1024 * 1024;
+
+        /// <summary>
+        /// Default Values.
         /// Default folder path to upload files if none is provided.
         /// </summary>
         public static readonly string FilePathTarget =
             Path.Combine(Path.GetPathRoot(Environment.CurrentDirectory)
                 ?? throw new InvalidOperationException(
-                    "No se pudo determinar el directorio raíz."),
+                    "The root directory could not be determined."),
                     "DefaultUploadedImages"
                 );
 

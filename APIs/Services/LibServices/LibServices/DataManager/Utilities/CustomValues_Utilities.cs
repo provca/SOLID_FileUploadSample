@@ -19,13 +19,24 @@ namespace LibServices.DataManager.Utilities
         /// The custom name for the uploaded file. If not provided or empty, 
         /// the default name from <see cref="UploadFileSettings.CustomFileName"/> is used.
         /// </param>
+        /// <param name="isWASM">
+        /// A flag indicating whether the values are being retrieved for a WebAssembly context. 
+        /// Defaults to false.
+        /// </param>
         /// <returns>
         /// A tuple containing the validated maximum file size, target file path, and custom file name.
         /// </returns>
-        public static (long MaxFileSize, string FilePathTarget, string CustomFileName) GetCustomValuesFromFile(long maxFileSize, string filePathTarget, string customFileName)
+        public static (long MaxFileSize, string FilePathTarget, string CustomFileName) GetCustomValuesFromFile(long maxFileSize, string filePathTarget, string customFileName, bool isWASM = false)
         {
             // Use the default max file size from settings if none is provided or maxFileSize is zero or less.
-            maxFileSize = maxFileSize <= 0 ? UploadFileSettings.MaxFileSize : maxFileSize;
+            if (isWASM)
+            {
+                maxFileSize = maxFileSize <= 0 || maxFileSize > UploadFileSettings.MaxFileSize ? UploadFileSettings.MaxFileSize : maxFileSize;
+            }
+            else
+            {
+                maxFileSize = maxFileSize <= 0 || maxFileSize > UploadFileSettings.MaxFileSizeWASM ? UploadFileSettings.MaxFileSizeWASM : maxFileSize;
+            }
 
             // Set filePathTarget to the default folder if not provided or if it's an empty string.
             filePathTarget = string.IsNullOrWhiteSpace(filePathTarget) ? UploadFileSettings.FilePathTarget : filePathTarget;
