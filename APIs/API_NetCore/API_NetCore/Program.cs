@@ -27,14 +27,20 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API Net Core", Version = "v1" });
 });
 
-// Configure CORS policy to allow all origins, methods, and headers.
+// Configure CORS policy to allow only Blazor WebAssembly.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder => builder
-            .AllowAnyOrigin()
+    options.AddPolicy("BlazorPolicy",
+        builder =>
+        {
+            builder.WithOrigins(
+                "http://localhost:5145",   // Develop URL.
+                "https://localhost:7279"   // Production URL, for example https://your-production-url.com.
+            )
+            .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowCredentials();
+        });
 });
 
 // Set the URLs for the web host to listen on.
@@ -48,10 +54,19 @@ var app = builder.Build();
 // Configure middleware for development environment.
 if (app.Environment.IsDevelopment())
 {
+    // Show developer exception page for detailed error info.
+    app.UseDeveloperExceptionPage();
+
     // Enable Swagger UI for API documentation.
     app.UseSwagger();
-    app.UseSwaggerUI();
-    app.UseDeveloperExceptionPage(); // Show developer exception page for detailed error info.
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Net Core v1"));
+
+    // Show developer exception page for detailed error info.
+    app.UseDeveloperExceptionPage(); 
+
+    // Configure the default route to redirect to Swagger UI.
+    app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
+        .ExcludeFromDescription();
 }
 
 // Enable HTTPS redirection.
@@ -64,11 +79,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 // Apply the CORS policy.
-app.UseCors("AllowAll");
-
-// Configure the default route to redirect to Swagger UI.
-app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
-    .ExcludeFromDescription();
+app.UseCors("BlazorPolicy");
 
 // Map controller routes.
 app.MapControllers();
