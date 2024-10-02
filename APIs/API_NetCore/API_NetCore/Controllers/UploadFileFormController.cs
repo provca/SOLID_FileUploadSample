@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API_NetCore.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UploadFileFormModelController : ControllerBase
     {
         /// <summary>

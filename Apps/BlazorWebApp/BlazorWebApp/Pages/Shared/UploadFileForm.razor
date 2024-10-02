@@ -1,5 +1,4 @@
-﻿@using System.Text
-@using System.Text.Json
+﻿@inject IBlazorFileUploadService BlazorFileUploadService
 
 <h3 style="text-align:center">Shared component</h3>
 <section style="width: 33%; margin: auto">
@@ -27,13 +26,14 @@
 
         <!-- Button -->
         <button type="button" class="btn btn-primary" @onclick="UploadFileAsync">Upload File</button>
+        @if (isUploadSuccess.HasValue)
+        {
+            <p>@(isUploadSuccess.Value ? "File uploaded successfully!" : "File upload failed.")</p>
+        }
     </form>
 </section>
 
 @code {
-    
-    // Injects the HttpClient service for making HTTP requests.
-    [Inject] private HttpClient _httpClient { get; set; } = default!;
 
     // Stores the selected file from the input.
     private IBrowserFile? _browserFile;
@@ -43,9 +43,12 @@
 
     // Custom name for the file.
     private string _customFileName = UploadFileSettings.CustomFileName;
-    
+
     // Target folder path for the upload.
     private string _filePathTarget = UploadFileSettings.FilePathTarget;
+
+    // Nullable bool to indicate success or failure
+    private bool? isUploadSuccess;
 
     /// <summary>
     /// Handles the event when a file is selected for upload.
@@ -58,10 +61,13 @@
 
         // Updates the file name field with the selected file's name.
         _fileName = _browserFile.Name;
+
+        // Reset the message when a new file is selected.
+        isUploadSuccess = null;
     }
 
     /// <summary>
-    /// Asynchronously uploads the selected file to the server.
+    /// Asynchronously uploads the selected file to the server by <see cref="BlazorWebApp.Services.BlazorFileUploadService"/> class.
     /// </summary>
     private async Task UploadFileAsync()
     {
@@ -69,57 +75,32 @@
         if (_browserFile == null)
         {
             Console.WriteLine("No file selected.");
-            return;
+            return ;
         }
 
-        // Converts the selected file to a byte array.
-        byte[] fileBytes = await ConvertToByteArray(_browserFile);
+        // Tries to upload the file using the BlazorFileUploadService.
+        try
+        {
+            // It passes the selected browser file, the custom file name, and the target file path.
+            isUploadSuccess = await BlazorFileUploadService.UploadFileAsync(_browserFile, _customFileName, _filePathTarget);
 
-        // Creates a model containing the file data for the upload.
-        var uploadModel = new UploadFileByteArrayModel
+            if (isUploadSuccess.Value)
             {
-                FileBytes = fileBytes,
-                FileName = _fileName,
-                CustomFileName = _customFileName,
-                FilePathTarget = _filePathTarget
-            };
-
-        // Serializes the model to JSON format for the HTTP request.
-        var jsonContent = new StringContent(JsonSerializer.Serialize(uploadModel), Encoding.UTF8, "application/json");
-
-        // Sends a POST request to the API to upload the file.
-        var response = await _httpClient.PostAsync("api/UploadFileByteArray/UploadFile", jsonContent);
-
-        // Checks if the response indicates a successful upload.
-        if (response.IsSuccessStatusCode)
-        {
-            Console.WriteLine("File uploaded successfully.");
+                Console.WriteLine("File uploaded successfully.");
+            }
+            else
+            {
+                Console.WriteLine("File upload failed.");
+            }
         }
-        else
+        catch (HttpRequestException ex)
         {
-            // Logs an error message if the upload fails, including the error content.
-            var error = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Error uploading file: {error}");
-        }
-    }
+            // Indicate failure.
+            isUploadSuccess = false;
 
-    /// <summary>
-    /// Converts the selected file into a byte array.
-    /// </summary>
-    /// <param name="file">The browser file to convert.</param>
-    /// <returns>A byte array representing the file's content.</returns>
-    private async Task<byte[]> ConvertToByteArray(IBrowserFile file)
-    {
-        using (var stream = file.OpenReadStream())
-        {
-            // Creates a buffer to hold the file data.
-            byte[] buffer = new byte[file.Size];
-
-            // Reads the file data into the buffer.
-            await stream.ReadAsync(buffer, 0, (int)file.Size);
-
-            // Returns the buffer containing the file data as a byte array.
-            return buffer;
+            // If an HttpRequestException is thrown, logs the error message from the exception.
+            // This could indicate a failure in the HTTP request or an issue on the server.
+            Console.WriteLine(ex.Message);
         }
     }
 }

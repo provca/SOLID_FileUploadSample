@@ -1,6 +1,7 @@
 ﻿using API_NetCore.Models;
 using API_NetCore.Responses;
 using LibServices.Configuration;
+using LibServices.DataManager.Adapters;
 using LibServices.DataManager.Factories;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,8 +10,8 @@ namespace API_NetCore.Controllers
     /// <summary>
     /// Controller for handling file uploads from Blazor WebAssembly using byte arrays.
     /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class UploadFileByteArrayController : ControllerBase
     {
         /// <summary>
@@ -30,7 +31,7 @@ namespace API_NetCore.Controllers
             try
             {
                 // Adapter to transform the byte array into a file service compatible object.
-                var fileAdapter = new LibServices.DataManager.Adapters.ByteArrayToIFileServiceAdapter(model.FileBytes, model.FileName);
+                var fileAdapter = new ByteArrayToIFileServiceAdapter(model.FileBytes, model.FileName);
 
                 // Use the file manager service to validate and upload the file.
                 var fileUrlResult = await FilesManagerServiceFactoryForWASM.ValidateAndUploadFileAsync(

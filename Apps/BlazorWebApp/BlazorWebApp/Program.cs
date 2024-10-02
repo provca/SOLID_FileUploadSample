@@ -1,4 +1,6 @@
 using BlazorWebApp;
+using BlazorWebApp.Services;
+using BlazorWebApp.Services.Interfaces;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -18,6 +20,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 // This service is used to make HTTP requests. The base address is set to the server's URI.
 // Uncomment the line below to use the base address from the host environment instead.
 // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+
+// Registers the BlazorFileUploadService as a scoped service in the dependency injection container.
+// The service implements the IBlazorFileUploadService interface, and it will be available for dependency injection
+// throughout the application for the lifetime of the HTTP request in Blazor WebAssembly.
+builder.Services.AddScoped<IBlazorFileUploadService, BlazorFileUploadService>();
 
 // Use a hardcoded base address for the HttpClient, pointing to the API running on localhost.
 // This is useful during development to point to the backend service.
