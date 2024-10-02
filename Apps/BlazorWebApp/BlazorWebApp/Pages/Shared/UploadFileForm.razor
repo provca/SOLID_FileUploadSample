@@ -28,13 +28,16 @@
         <button type="button" class="btn btn-primary mt-3" @onclick="UploadFileAsync">Upload File</button>
         @if (isUploadSuccess.HasValue)
         {
+            // Displays an alert box when the upload status (isUploadSuccess) has a value (either true or false).
             <div class="alert @GetAlertClass() mt-3">
                 @if (isUploadSuccess.Value)
                 {
+                    // If the upload was successful, display the success message.
                     <p>@Message</p>
                 }
                 else
                 {
+                    // If the upload failed, display the error message.
                     <p>@ErrorMessage</p>
                 }
             </div>
