@@ -15,16 +15,20 @@ builder.RootComponents.Add<App>("#app");
 // Add a second root component for managing the head section of the document.
 // This allows for dynamic updates to the <head> tag, such as adding styles or meta tags.
 builder.RootComponents.Add<HeadOutlet>("head::after");
-
 // Registers the BlazorFileUploadService as a scoped service in the dependency injection container.
 // The service implements the IBlazorFileUploadService interface, and it will be available for dependency injection
 // throughout the application for the lifetime of the HTTP request in Blazor WebAssembly.
 builder.Services.AddScoped<IBlazorFileUploadService, BlazorFileUploadService>();
 
+// Sets the base address of the HttpClient depending on the environment (development or production).
 var baseAddress = builder.HostEnvironment.IsDevelopment()
-    ? "http://localhost:5145"   // Use in development.
-    : "https://localhost:7279"; // Use in production, for example https://your-production-url.com
+    // If the app is running in development mode, use the local API address.
+    ? "http://localhost:5176"
+    // If the app is in production, use the production API address (for example, https://your-production-url.com).
+    : "https://localhost:5001";
 
+// Registers HttpClient as a scoped service with the appropriate base address.
+// The HttpClient will be used for making HTTP requests throughout the Blazor WebAssembly app.
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(baseAddress) });
 
 // Build the application and run it asynchronously.

@@ -34,8 +34,10 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.WithOrigins(
-                "http://localhost:5145",   // Develop URL.
-                "https://localhost:7279"   // Production URL, for example https://your-production-url.com.
+                "http://localhost:5145",    // Develop URL.
+                "https://localhost:7279",   // Production URL, for example https://your-production-url.com.
+                "http://localhost:5176",    // Develop API URL.
+                "https://localhost:5001"    // Production API URL.
             )
             .AllowAnyHeader()
             .AllowAnyMethod()

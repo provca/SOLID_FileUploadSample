@@ -25,10 +25,19 @@
         </div>
 
         <!-- Button -->
-        <button type="button" class="btn btn-primary" @onclick="UploadFileAsync">Upload File</button>
+        <button type="button" class="btn btn-primary mt-3" @onclick="UploadFileAsync">Upload File</button>
         @if (isUploadSuccess.HasValue)
         {
-            <p>@(isUploadSuccess.Value ? "File uploaded successfully!" : "File upload failed.")</p>
+            <div class="alert @GetAlertClass() mt-3">
+                @if (isUploadSuccess.Value)
+                {
+                    <p>@Message</p>
+                }
+                else
+                {
+                    <p>@ErrorMessage</p>
+                }
+            </div>
         }
     </form>
 </section>
@@ -46,6 +55,12 @@
 
     // Target folder path for the upload.
     private string _filePathTarget = UploadFileSettings.FilePathTarget;
+
+    // Messages if file has been uploaded successfully.
+    private string? Message { get; set; }
+
+    // Messages if an error has occurred.
+    private string? ErrorMessage { get; set; }
 
     // Nullable bool to indicate success or failure
     private bool? isUploadSuccess;
@@ -74,6 +89,8 @@
         // Checks if a file has been selected; if not, log an error message.
         if (_browserFile == null)
         {
+            isUploadSuccess = false;
+            ErrorMessage = "No file selected.";
             Console.WriteLine("No file selected.");
             return ;
         }
@@ -86,10 +103,13 @@
 
             if (isUploadSuccess.Value)
             {
+                isUploadSuccess = true;
+                Message = "File uploaded successfully!";
                 Console.WriteLine("File uploaded successfully.");
             }
             else
             {
+                ErrorMessage = "File upload failed.";
                 Console.WriteLine("File upload failed.");
             }
         }
@@ -97,10 +117,16 @@
         {
             // Indicate failure.
             isUploadSuccess = false;
+            ErrorMessage = $"An error occurred: {ex.Message}";
 
             // If an HttpRequestException is thrown, logs the error message from the exception.
             // This could indicate a failure in the HTTP request or an issue on the server.
             Console.WriteLine(ex.Message);
         }
+    }
+
+    private string GetAlertClass()
+    {
+        return isUploadSuccess.HasValue && isUploadSuccess.Value ? "alert-success" : "alert-danger";
     }
 }
