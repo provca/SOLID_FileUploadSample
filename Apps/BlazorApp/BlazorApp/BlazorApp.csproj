@@ -1,9 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>Pere Rovira</Authors>
+    <Description>A Blazor App project that integrates file upload functionality, allowing users to select and upload files using services provided by the LibServices and LibFilesManager libraries.</Description>
+    <Company>N/A</Company>
+    <ProjectUrl>https://github.com/provca</ProjectUrl>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\APIs\Services\LibServices\LibServices\LibServices.csproj" />
+  </ItemGroup>
 
 </Project>
