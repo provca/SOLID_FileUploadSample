@@ -1,11 +1,16 @@
-﻿<h3>Shared component</h3>
+﻿@inject IJSRuntime JSRuntime
+
+<h3>Shared component</h3>
 
 <section>
     <form>
-        <p>✌</p>
+        <button type="button" class="btn btn-primary mt-3" @onclick="UploadFileAsync">✌</button>
     </form>
 </section>
 
 @code {
-
+    private async Task UploadFileAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("console.log", "Hello World!");
+    }
 }
