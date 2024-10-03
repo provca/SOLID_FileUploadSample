@@ -1,16 +1,190 @@
-﻿@inject IJSRuntime JSRuntime
+﻿@inject IJSRuntime _JSRuntime
+@inject ConsoleLoggerService _logger
+@inject IBlazorFileUploadService _fileUploadService
 
 <h3>Shared component</h3>
+<section style="width: 90%">
+    <form enctype="multipart/form-data">
+        <!-- File input section -->
+        <div class="form-group">
+            <label for="fileName">Select a file to upload:</label>
+            <InputFile OnChange="HandleFileSelected" />
+            <p>
+                <span>Selected File: @_fileName</span>
+            </p>
+        </div>
 
-<section>
-    <form>
-        <button type="button" class="btn btn-primary mt-3" @onclick="UploadFileAsync">✌</button>
+        <!-- Custom File Name -->
+        <div class="form-group">
+            <label for="CustomFileName">Rename the file (optional):</label>
+            <input type="text" class="form-control" name="CustomFileName" @bind="_customFileName" />
+        </div>
+
+        <!-- Folder Target -->
+        <div class="form-group">
+            <label for="FilePathTarget">Folder Target (optional):</label>
+            <input type="text" class="form-control" name="FilePathTarget" @bind="_filePathTarget" />
+        </div>
+
+        <!-- Button -->
+        <button type="button" class="btn btn-primary mt-3" @onclick="UploadFileAsync" disabled="@isUploading">Upload File</button>
+        @if (isUploadSuccess.HasValue)
+        {
+            // Displays an alert box when the upload status (isUploadSuccess) has a value (either true or false).
+            <div class="alert @GetAlertClass() mt-3">
+                @if (isUploadSuccess.Value)
+                {
+                    // If the upload was successful, display the success message.
+                    <p>@Message</p>
+                }
+                else
+                {
+                    // If the upload failed, display the error message.
+                    <p>@ErrorMessage</p>
+                }
+            </div>
+        }
     </form>
 </section>
 
 @code {
+    /// <summary>
+    /// Stores the selected file from the input.
+    /// </summary>
+    private IBrowserFile? _browserFile;
+
+    /// <summary>
+    /// Stores the name of the selected file.
+    /// </summary>
+    private string _fileName = string.Empty;
+
+    /// <summary>
+    /// Custom name for the file.
+    /// </summary>
+    private string _customFileName = UploadFileSettings.CustomFileName;
+
+    /// <summary>
+    /// Target folder path for the upload.
+    /// </summary>
+    private string _filePathTarget = UploadFileSettings.FilePathTarget;
+
+    /// <summary>
+    /// Messages if the file has been uploaded successfully.
+    /// </summary>
+    private string? Message { get; set; }
+
+    /// <summary>
+    /// Messages if an error has occurred during file upload.
+    /// </summary>
+    private string? ErrorMessage { get; set; }
+
+    /// <summary>
+    /// Nullable bool to indicate the success or failure of the upload.
+    /// </summary>
+    private bool? isUploadSuccess;
+
+    /// <summary>
+    /// Indicates if the upload process is currently ongoing.
+    /// </summary>
+    private bool isUploading = false;
+
+    /// <summary>
+    /// Handles the event when a file is selected for upload.
+    /// </summary>
+    /// <param name="e">The event arguments containing information about the selected file.</param>
+    private void HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        // Assigns the selected file to the private field.
+        _browserFile = e.File;
+
+        // Updates the file name field with the selected file's name.
+        _fileName = _browserFile.Name;
+
+        // Reset the message when a new file is selected.
+        isUploadSuccess = null;
+    }
+
+    /// <summary>
+    /// Asynchronously uploads the selected file to the server.
+    /// </summary>
     private async Task UploadFileAsync()
     {
-        await JSRuntime.InvokeVoidAsync("console.log", "Hello World!");
+        // Indicates that the file upload process is starting.
+        isUploading = true;
+
+        // Check if a file has been selected by the user.
+        if (_browserFile == null)
+        {
+            // Set the upload success status to false if no file is selected.
+            isUploadSuccess = false;
+
+            // Set the error message to notify the user.
+            ErrorMessage = "No file selected.";
+
+            // Log the error message to the console.
+            await _logger.LogToConsole(ErrorMessage);
+
+            // Mark the uploading process as finished.
+            isUploading = false;
+
+            // Exit the method early since there's no file to upload.
+            return;
+        }
+
+        try
+        {
+            // Attempt to upload the file using the file upload service.
+            var uploadFile = await _fileUploadService.UploadFileAsync(_browserFile, _customFileName, _filePathTarget);
+
+            // Check if the upload was successful.
+            if (uploadFile.isSuccess)
+            {
+                // Set the upload success status to true.
+                isUploadSuccess = true;
+
+                // Construct a success message with the uploaded file path.
+                Message = $"File uploaded successfully to {uploadFile.uploadedFilePath}!";
+
+                // Log the success message to the console.
+                await _logger.LogToConsole(Message);
+            }
+            else
+            {
+                // If the upload failed, set the error message accordingly.
+                ErrorMessage = "File upload failed.";
+
+                // Log the error message to the console.
+                await _logger.LogToConsole(ErrorMessage);
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            // Set the upload success status to false due to an exception.
+            isUploadSuccess = false;
+
+            // Construct an error message with the exception details.
+            ErrorMessage = $"An error occurred: {ex.Message}";
+
+            // Log the exception message to the console.
+            await _logger.LogToConsole(ex.Message);
+        }
+        finally
+        {
+            // Mark the uploading process as finished regardless of the outcome.
+            isUploading = false;
+        }
+    }
+
+    /// <summary>
+    /// Determines the appropriate CSS class for the alert based on the upload success status.
+    /// </summary>
+    /// <returns>
+    /// Returns "alert-success" if the file upload was successful, otherwise returns "alert-danger" for errors.
+    /// </returns>
+    private string GetAlertClass()
+    {
+        // Check if the upload status has a value and is successful (true).
+        return isUploadSuccess.HasValue && isUploadSuccess.Value ? "alert-success" : "alert-danger";
     }
 }
+
