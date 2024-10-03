@@ -1,17 +1,38 @@
+using SwitchLoggers.Enums;
+using System.Runtime.InteropServices;
+using WinFormUploadFile.ServiceProviders;
+
 namespace WinFormUploadFile
 {
     internal static class Program
     {
+        [STAThread]
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
-        [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
+            // Open the console.
+            AllocConsole();
+
+            // Initialize Windows Forms App.
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            // Initialize SwitchLogger.
+            // Options:
+            // 1. nameof(LoggerType.Serilog)
+            // 2. nameof(LoggerType.NLog)
+            // 3. nameof(LoggerType.TraceLog) by default.
+            var serviceProvider = SwitchLoggersServiceProvider.ConfigureLogger(nameof(LoggerType.Serilog), false, string.Empty, string.Empty);
+
+            // Run UploadFileForm.cs
             Application.Run(new UploadFileForm());
         }
+
+        // Declare AllocConsole from API Windows.
+        [DllImport("kernel32.dll")]
+        private static extern bool AllocConsole();
     }
 }

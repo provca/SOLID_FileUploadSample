@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\Backend\LibFilesManager\LibFilesManager\LibFilesManager.csproj" />
+    <ProjectReference Include="..\..\..\..\Backend\SwitchLoggers\SwitchLoggers\SwitchLoggers.csproj" />
   </ItemGroup>
 
 </Project>

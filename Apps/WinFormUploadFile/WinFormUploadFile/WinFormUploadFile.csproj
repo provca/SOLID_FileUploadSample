@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\APIs\Services\LibServices\LibServices\LibServices.csproj" />
+    <ProjectReference Include="..\..\..\Backend\SwitchLoggers\SwitchLoggers\SwitchLoggers.csproj" />
   </ItemGroup>
 
 </Project>

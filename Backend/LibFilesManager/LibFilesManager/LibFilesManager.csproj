@@ -13,4 +13,10 @@
     <AssemblyVersion>1.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="SwitchLoggers">
+      <HintPath>..\..\SwitchLoggers\SwitchLoggers\bin\Debug\net8.0\SwitchLoggers.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
