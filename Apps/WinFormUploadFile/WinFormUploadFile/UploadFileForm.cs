@@ -1,5 +1,7 @@
 using LibServices.Configuration;
 using LibServices.DataManager.Factories;
+using SwitchLoggers.Loggers.Interfaces;
+using SwitchLoggers.Settings;
 using System.Diagnostics;
 using WinFormUploadFile.Components;
 
@@ -10,6 +12,9 @@ namespace WinFormUploadFile
     /// </summary>
     public partial class UploadFileForm : Form
     {
+        // Selected logger.
+        private readonly ILoggers _logger = SwitchLoggersSettings.Logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="UploadFileForm"/> class.
         /// </summary>
@@ -40,7 +45,7 @@ namespace WinFormUploadFile
                 {
                     // If no file is selected leave empty.
                     FilePath_txt.Text = string.Empty;
-                    Trace.WriteLine($"No file was selected.");
+                    _logger.LogWarning($"No file was selected.");
                 }
             }
         }
@@ -65,7 +70,7 @@ namespace WinFormUploadFile
                 {
                     // If there is not a valid folder, textbox gets a default value.
                     FilePathTarget_txt.Text = UploadFileSettings.FilePathTarget;
-                    Trace.WriteLine($"No folder selected. Image will be saved in {UploadFileSettings.FilePathTarget}");
+                    _logger.LogWarning($"No folder selected. Image will be saved in {UploadFileSettings.FilePathTarget}");
                 }
             }
         }
