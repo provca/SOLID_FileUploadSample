@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UploadFileByteArrayComponent } from './upload-file-byte-array.component';
+import { UploadFileByteArrayComponent } from './upload-file-form.component';
 
 describe('UploadFileByteArrayComponent', () => {
   let component: UploadFileByteArrayComponent;

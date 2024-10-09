@@ -1,0 +1,54 @@
+<h2 style="text-align: center">This is the main page of UploadFileForm</h2>
+<section style="width: 33%; margin: auto">
+  <!-- Formulario para subir archivos -->
+  <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <!-- File input section -->
+    <div class="form-group">
+      <label for="fileInput">Select a file to upload:</label>
+      <input type="file"
+             id="fileInput"
+             (change)="handleFileSelected($event)"
+             class="form-control"
+             required />
+      <p *ngIf="FileName">
+        <span>Selected File: {{ FileName }}</span>
+      </p>
+    </div>
+
+    <!-- Custom File Name -->
+    <div class="form-group">
+      <label for="customFileName">Rename the file (optional):</label>
+      <input type="text"
+             id="customFileName"
+             [(ngModel)]="CustomFileName"
+             name="customFileName"
+             class="form-control"
+             placeholder="Enter custom file name" />
+    </div>
+
+    <!-- Folder Target -->
+    <div class="form-group">
+      <label for="filePathTarget">Folder Target (optional):</label>
+      <input type="text"
+             id="filePathTarget"
+             [(ngModel)]="FilePathTarget"
+             name="filePathTarget"
+             class="form-control"
+             placeholder="Enter target folder path" />
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary mt-3" [disabled]="!FormFile">
+      Upload File
+    </button>
+  </form>
+
+  <!-- Success/Error Messages -->
+  <div *ngIf="Message" class="alert alert-success mt-3">
+    {{ Message }}
+  </div>
+  <div *ngIf="ErrorMessage" class="alert alert-danger mt-3">
+    {{ ErrorMessage }}
+  </div>
+</section>
+
