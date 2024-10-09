@@ -26,7 +26,7 @@ export class UploadFileFormComponent implements OnInit {
     // Error message displayed when the upload fails.
     ErrorMessage: string | undefined;
 
-    constructor(private uploadFileFormService: UploadFileFormService) { }
+    constructor(private uploadFileFormService: UploadFileFormService) {}
 
     /**
     Initializes the component's properties with default values.

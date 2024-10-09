@@ -1,0 +1,49 @@
+<!-- src/app/components/upload-file-byte-array/upload-file-byte-array.component.html -->
+<h2 style="text-align: center">Upload File as Byte Array</h2>
+<section style="width: 50%; margin: auto">
+  <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+    <!-- File input section -->
+    <div class="form-group">
+      <label for="file">Select a file to upload:</label>
+      <input type="file"
+             (change)="handleFileSelected($event)"
+             class="form-control"
+             required />
+      <p *ngIf="FileName">
+        <strong>Selected File:</strong> {{ FileName }}
+      </p>
+    </div>
+
+    <!-- Custom File Name input -->
+    <div class="form-group">
+      <label for="customFileName">Custom File Name (optional):</label>
+      <input type="text"
+             [(ngModel)]="CustomFileName"
+             name="customFileName"
+             class="form-control" />
+    </div>
+
+    <!-- File Path Target input -->
+    <div class="form-group">
+      <label for="filePathTarget">Target Folder Path (optional):</label>
+      <input type="text"
+             [(ngModel)]="FilePathTarget"
+             name="filePathTarget"
+             class="form-control" />
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary mt-3">
+      Upload File
+    </button>
+  </form>
+
+  <!-- Success/Error Messages -->
+  <div *ngIf="Message" class="alert alert-success mt-3">
+    {{ Message }}
+  </div>
+  <div *ngIf="ErrorMessage" class="alert alert-danger mt-3">
+    {{ ErrorMessage }}
+  </div>
+</section>
+
