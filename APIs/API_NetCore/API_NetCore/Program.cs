@@ -30,12 +30,14 @@ builder.Services.AddSwaggerGen(c =>
 // Configure CORS policy to allow only Blazor WebAssembly.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("BlazorPolicy",
+    options.AddPolicy("BlazorAngularPolicy",
         builder =>
         {
             builder.WithOrigins(
                 "http://localhost:5145",    // Develop URL.
                 "https://localhost:7279",   // Production URL, for example https://your-production-url.com.
+                "http://localhost:4200",    // Develop Angular URL.
+                "https://localhost:4201",   // Production Angular URL, for example https://your-production-url.com.
                 "http://localhost:5176",    // Develop API URL.
                 "https://localhost:5001"    // Production API URL.
             )
@@ -64,7 +66,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Net Core v1"));
 
     // Show developer exception page for detailed error info.
-    app.UseDeveloperExceptionPage(); 
+    app.UseDeveloperExceptionPage();
 
     // Configure the default route to redirect to Swagger UI.
     app.MapGet("/", () => Results.Redirect("/swagger/index.html"))
@@ -81,7 +83,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 // Apply the CORS policy.
-app.UseCors("BlazorPolicy");
+app.UseCors("BlazorAngularPolicy");
 
 // Map controller routes.
 app.MapControllers();
