@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiSampleApp.Pages.UploadFilePage"
+             Title="UploadFilePage">
+    <VerticalStackLayout>
+        <Label 
+            Text="Welcome to .NET MAUI!"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+        <Label Text="Select a file to upload:" />
+        <Button Text="Select File" Clicked="OnSelectFileClicked"/>
+        <Entry x:Name="CustomFileNameEntry" Placeholder="Custom File Name" />
+        <Entry x:Name="FilePathTargetEntry" Placeholder="File Path Target" />
+        <Button Text="Upload File" Clicked="OnUploadFileClicked"/>
+        <Label x:Name="MessageLabel" />
+    </VerticalStackLayout>
+</ContentPage>

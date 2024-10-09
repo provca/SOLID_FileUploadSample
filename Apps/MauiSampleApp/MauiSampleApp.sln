@@ -5,6 +5,12 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MauiSampleApp", "MauiSampleApp\MauiSampleApp.csproj", "{5CD7AFC2-FB8E-4E89-ADE5-E85A3003CF11}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibFilesManager", "..\..\Backend\LibFilesManager\LibFilesManager\LibFilesManager.csproj", "{0ED1A209-3894-4DE5-98F2-82823972986A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SwitchLoggers", "..\..\Backend\SwitchLoggers\SwitchLoggers\SwitchLoggers.csproj", "{8D30598E-4B95-46FE-B6A0-ECE6F3CE8523}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibServices", "..\..\APIs\Services\LibServices\LibServices\LibServices.csproj", "{DB4904A5-D3CF-4B67-B73A-000B035A686C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +23,18 @@ Global
 		{5CD7AFC2-FB8E-4E89-ADE5-E85A3003CF11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CD7AFC2-FB8E-4E89-ADE5-E85A3003CF11}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5CD7AFC2-FB8E-4E89-ADE5-E85A3003CF11}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{0ED1A209-3894-4DE5-98F2-82823972986A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED1A209-3894-4DE5-98F2-82823972986A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED1A209-3894-4DE5-98F2-82823972986A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED1A209-3894-4DE5-98F2-82823972986A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D30598E-4B95-46FE-B6A0-ECE6F3CE8523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D30598E-4B95-46FE-B6A0-ECE6F3CE8523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D30598E-4B95-46FE-B6A0-ECE6F3CE8523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D30598E-4B95-46FE-B6A0-ECE6F3CE8523}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB4904A5-D3CF-4B67-B73A-000B035A686C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB4904A5-D3CF-4B67-B73A-000B035A686C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB4904A5-D3CF-4B67-B73A-000B035A686C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB4904A5-D3CF-4B67-B73A-000B035A686C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

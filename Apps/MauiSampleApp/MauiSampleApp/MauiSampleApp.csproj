@@ -72,4 +72,10 @@
 	  <ProjectReference Include="..\..\..\Backend\SwitchLoggers\SwitchLoggers\SwitchLoggers.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <MauiXaml Update="Pages\UploadFilePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>
