@@ -46,18 +46,27 @@ namespace API_NetCore.Controllers
                 {
                     return Ok(new FileUploadResponse
                     {
+                        IsUploaded = true,
                         Message = $"File uploaded successfully to {fileUrlResult.uploadedFilePath}!",
                         UploadedFilePath = fileUrlResult.uploadedFilePath
                     });
                 }
 
                 // If any unexpected error occurs, return an error.
-                return StatusCode(500, "An unexpected error occurred during the file upload.");
+                return StatusCode(500, new FileUploadResponse
+                {
+                    IsUploaded = false,
+                    Message = "An unexpected error occurred during the file upload."
+                });
             }
             catch (Exception ex)
             {
                 // Handle exceptions and return an error response.
-                return StatusCode(500, $"File upload failed: {ex.Message}");
+                return StatusCode(500, new FileUploadResponse
+                {
+                    IsUploaded = false,
+                    Message = $"File upload failed: {ex.Message}"
+                });
             }
         }
     }

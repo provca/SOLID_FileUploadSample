@@ -14,6 +14,7 @@
         /// Gets or sets the file path of the uploaded file.
         /// </summary>
         public string UploadedFilePath { get; set; } = string.Empty;
-    }
 
+        public bool IsUploaded { get; set; }
+    }
 }
